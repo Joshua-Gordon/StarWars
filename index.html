@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>
+  <title>Gee Golly</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="style.css">
+  <script type="text/javascript" src="init.js"></script>
+  <script type="text/javascript" src="starwars.js"></script>
+</head>
+<body>
+  <p id="counter"></p>
+  <div class="row">
+    <button onClick="step()">Step</button>
+    <button onClick="goBack()">Back</button>
+    <button onClick="clearScreen()">Clear</button>
+    <button onClick="beginStep()">Auto Step On</button>
+    <button onClick="stopStep()">Auto Step Off</button>
+    <button id="brush" onClick="cycleBrush()">Cycle Brush</button>
+  </div>
+  <canvas id="canvas" style="border:1px solid #000000;"></canvas>
+</body>
