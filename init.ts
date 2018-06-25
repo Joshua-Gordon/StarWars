@@ -8,6 +8,8 @@ var old : grid[];
 var counter : HTMLElement;
 var stepping : number;
 var autoStepOn : boolean;
+var slider : HTMLInputElement;
+var speed : number;
 
 function init() : void {
   canvas = <HTMLCanvasElement>document.getElementById("canvas");
@@ -15,8 +17,11 @@ function init() : void {
   g = new grid(15);
   gen = 0;
   old = [];
+  speed = 500;
   counter = document.getElementById("counter");
   counter.innerHTML="Generation: " + gen.toString();
+  slider = document.getElementById("speedSlider") as HTMLInputElement;
+
   autoStepOn = false;
   resizeCanvas(canvas);
   //testLine(ctx);
@@ -100,7 +105,7 @@ function clickHandler(can : HTMLCanvasElement, event : MouseEvent) : any {
 
 function beginStep() {
   if(!autoStepOn){
-    stepping = setInterval(step,500);
+    stepping = setInterval(step,speed);
     autoStepOn = true;
   }
 }
@@ -109,5 +114,14 @@ function stopStep() {
   if(autoStepOn) {
     clearInterval(stepping);
     autoStepOn = false;
+  }
+}
+
+function setSpeed(val : number) {
+  speed = 500 - val;
+  console.log("Speed set");
+  if(autoStepOn){
+    stopStep();
+    beginStep();
   }
 }
