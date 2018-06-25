@@ -90,6 +90,7 @@ function clearScreen() : void {
   old = [];
   gen = 0;
   counter.innerHTML="Generation: " + gen.toString();
+  stopStep();
   g.draw(ctx);
 }
 

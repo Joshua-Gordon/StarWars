@@ -78,6 +78,7 @@ function clearScreen() {
     old = [];
     gen = 0;
     counter.innerHTML = "Generation: " + gen.toString();
+    stopStep();
     g.draw(ctx);
 }
 function clickHandler(can, event) {
