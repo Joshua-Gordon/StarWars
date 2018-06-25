@@ -103,3 +103,20 @@ function cycleBrush() {
         b.style.color = "black";
     }
 }
+function resizeGrid(newSize, g) {
+    var newCells = [];
+    var newX = window.innerWidth / newSize;
+    var newY = window.innerHeight / newSize;
+    for (var x = 0; x < newX; ++x) {
+        newCells[x] = [];
+        for (var y = 0; y < newY; ++y) {
+            if (x < g.numX && y < g.numY) {
+                newCells[x][y] = g.cells[x][y];
+            }
+            else {
+                newCells[x][y] = 0;
+            }
+        }
+    }
+    return new grid(newSize, newCells);
+}

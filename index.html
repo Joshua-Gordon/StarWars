@@ -17,6 +17,7 @@
     <button onClick="stopStep()">Auto Step Off</button>
     <button id="brush" onClick="cycleBrush()">Cycle Brush</button>
     <input type="range" min="0" max="499" value="0" class="slider" id="speedSlider" oninput="setSpeed(this.value)">
+    <input type="range" min="1" max="20" value="15" class="slider" id="sizeSlider" oninput="setSize(this.value)">
   </div>
   <canvas id="canvas" style="border:1px solid #000000;"></canvas>
 </body>

@@ -9,6 +9,7 @@ var stepping;
 var autoStepOn;
 var slider;
 var speed;
+var inDrag;
 function init() {
     canvas = document.getElementById("canvas");
     ctx = canvas.getContext("2d");
@@ -19,15 +20,13 @@ function init() {
     counter = document.getElementById("counter");
     counter.innerHTML = "Generation: " + gen.toString();
     slider = document.getElementById("speedSlider");
+    inDrag = false;
     autoStepOn = false;
     resizeCanvas(canvas);
-    //testLine(ctx);
-    var cellSize = 15;
-    drawGrid(cellSize, ctx);
-    //testGrid(ctx);
-    g.flipCell(20, 20);
-    g.flipCell(21, 20);
     g.draw(ctx);
+    canvas.addEventListener("mousedown", function (e) { return inDrag = true; });
+    canvas.addEventListener("mouseup", function (e) { return inDrag = false; });
+    canvas.addEventListener("mousemove", function (e) { return dragHandler(canvas, e); });
     canvas.addEventListener("click", function (e) { return clickHandler(canvas, e); });
 }
 function testLine(ctx) {
@@ -82,12 +81,20 @@ function clearScreen() {
     g.draw(ctx);
 }
 function clickHandler(can, event) {
-    console.log("Clicked");
     var rect = can.getBoundingClientRect();
     var x = event.clientX - rect.left;
     var y = event.clientY - rect.top;
     g.flipCell(x / g.cellSize, y / g.cellSize);
     g.draw(ctx);
+}
+function dragHandler(can, event) {
+    if (inDrag) {
+        var rect = can.getBoundingClientRect();
+        var x = event.clientX - rect.left;
+        var y = event.clientY - rect.top;
+        g.flipCell(x / g.cellSize, y / g.cellSize);
+        g.draw(ctx);
+    }
 }
 function beginStep() {
     if (!autoStepOn) {
@@ -108,4 +115,9 @@ function setSpeed(val) {
         stopStep();
         beginStep();
     }
+}
+function setSize(val) {
+    var newgrid = resizeGrid(val, g);
+    g = newgrid;
+    g.draw(ctx);
 }

@@ -10,6 +10,7 @@ var stepping : number;
 var autoStepOn : boolean;
 var slider : HTMLInputElement;
 var speed : number;
+var inDrag : boolean;
 
 function init() : void {
   canvas = <HTMLCanvasElement>document.getElementById("canvas");
@@ -21,18 +22,16 @@ function init() : void {
   counter = document.getElementById("counter");
   counter.innerHTML="Generation: " + gen.toString();
   slider = document.getElementById("speedSlider") as HTMLInputElement;
-
+  inDrag = false;
   autoStepOn = false;
+
   resizeCanvas(canvas);
-  //testLine(ctx);
-  const cellSize = 15;
-  drawGrid(cellSize,ctx);
-  //testGrid(ctx);
-  g.flipCell(20,20);
-  g.flipCell(21,20);
   g.draw(ctx);
 
-  canvas.addEventListener("click",(e) => clickHandler(canvas,e));
+  canvas.addEventListener("mousedown",(e) => inDrag = true);
+  canvas.addEventListener("mouseup",(e) => inDrag = false);
+  canvas.addEventListener("mousemove",(e) => dragHandler(canvas,e));
+  canvas.addEventListener("click",(e) => clickHandler(canvas, e));
 }
 
 function testLine(ctx : CanvasRenderingContext2D) : void {
@@ -95,12 +94,21 @@ function clearScreen() : void {
 }
 
 function clickHandler(can : HTMLCanvasElement, event : MouseEvent) : any {
-  console.log("Clicked");
   var rect = can.getBoundingClientRect();
   var x = event.clientX - rect.left;
   var y = event.clientY - rect.top;
   g.flipCell(x/g.cellSize,y/g.cellSize);
   g.draw(ctx);
+}
+
+function dragHandler(can : HTMLCanvasElement, event : MouseEvent) : any {
+  if(inDrag){
+    var rect = can.getBoundingClientRect();
+    var x = event.clientX - rect.left;
+    var y = event.clientY - rect.top;
+    g.flipCell(x/g.cellSize,y/g.cellSize);
+    g.draw(ctx);
+  }
 }
 
 function beginStep() {
@@ -124,4 +132,10 @@ function setSpeed(val : number) {
     stopStep();
     beginStep();
   }
+}
+
+function setSize(val : number) {
+  var newgrid = resizeGrid(val, g);
+  g = newgrid;
+  g.draw(ctx);
 }
